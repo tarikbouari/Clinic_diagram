@@ -16,11 +16,34 @@ CREATE TABLE medical_histories(
     status VARCHAR 
 ); 
 
--- Create table Medical_histories
+-- Create table invoices
 CREATE TABLE invoices (
     id BIGSERIAL PRIMARY KEY,
     total_amount DECIMAL,
     generated_at TIMESTAMP,
     payed_at TIMESTAMP,
     medical_history_id INT REFERENCES medical_histories(id)
+);
+
+-- Create table Medical_treatments
+CREATE TABLE medical_treatments (
+    medical_histories_id INT REFERENCES medical_histories(id),
+    treatments_id INT REFERENCES treatments(id)
+);
+
+-- Create table treatments
+CREATE TABLE treatments (
+    id BIGSERIAL PRIMARY KEY,
+    type VARCHAR,
+    name VARCHAR
+);
+
+-- Create table invoice_items
+CREATE TABLE invoice_items (
+    id BIGSERIAL PRIMARY KEY,
+    unit_price DECIMAL,
+    quantity INT,
+    total_price DECIMAL,
+    FOREIGN KEY invoice_id INT REFERENCES invoices(id),
+    FOREIGN KEY treatment_id INT REFERENCES treatments(id)
 );
